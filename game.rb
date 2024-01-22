@@ -1,13 +1,15 @@
 require_relative './player.rb'
 require 'set'
+require_relative './ai_player.rb'
 
 class Game
     Dictionary = File.read('dictionary.txt').split("\n").to_set
     attr_reader :fragment, :current_player, :previous_player
-    def initialize(names)
+    def initialize(names, ai_num)
         @fragment = ''
         @players = []
         names.each{|name| @players << Player.new(name)}
+        ai_num.times{|i| @players << Ai_player.new}
         @current_player = @players[0]
         @previous_player = nil
         @losses = Hash.new(0)
