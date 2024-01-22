@@ -4,16 +4,21 @@ require_relative './ai_player.rb'
 
 class Game
     Dictionary = File.read('dictionary.txt').split("\n").to_set
-    attr_reader :fragment, :current_player, :previous_player
-    def initialize(names, ai_num)
+    attr_reader :fragment, :current_player, :previous_player, :num_human_player
+    def initialize(names)
         @fragment = ''
         @players = []
         names.each{|name| @players << Player.new(name)}
-        ai_num.times{|i| @players << Ai_player.new}
+        @num_human_player = @players.length
+        @players << Ai_player.new
         @current_player = @players[0]
         @previous_player = nil
         @losses = Hash.new(0)
         @players.each{|player| @losses[player] = 0}
+    end
+
+    def dictionary
+        Dictionary
     end
 
     def next_player!
@@ -39,12 +44,16 @@ class Game
     end
 
     def take_turn(player)
-        guess  = player.guess
+        if @losses[player] < 5
+            guess  = player.guess
+        end
+
         while !valid_play?(guess) && @losses[player] < 5
             @losses[player] +=1
             puts record(player)
             guess = player.guess
         end
+
         if @losses[player] < 5
             @fragment += guess
         end
@@ -71,7 +80,11 @@ class Game
 
             self.play_round
         end
-        puts "#{@current_player} wins"
+        if !Dictionary.include?(@fragment)
+            puts "#{@current_player} wins"
+        else
+            puts "#{@previous_player} wins"
+        end
 
 
     end
