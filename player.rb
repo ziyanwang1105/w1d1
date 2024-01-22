@@ -9,6 +9,8 @@ class Player
     def guess
 
         puts "Type in your guess Player #{@name}"
-        gets.chomp
+        gets.chomp.downcase
+
     end
+
 end
