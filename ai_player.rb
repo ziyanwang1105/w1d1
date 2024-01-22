@@ -3,8 +3,7 @@ require_relative './game.rb'
 class Ai_player
 
     def initialize
-        @fragment = Game.fragment
-        @num_human_player = Game.num_human_player
+
     end
 
 

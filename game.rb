@@ -10,7 +10,7 @@ class Game
         @players = []
         names.each{|name| @players << Player.new(name)}
         @num_human_player = @players.length
-        @players << Ai_player.new
+        #@players << Ai_player.new
         @current_player = @players[0]
         @previous_player = nil
         @losses = Hash.new(0)
@@ -69,7 +69,9 @@ class Game
 
     def play_round
         take_turn(@current_player)
-        self.next_player!
+        if !Dictionary.include?(@fragment)
+            self.next_player!
+        end
 
     end
 
@@ -81,9 +83,9 @@ class Game
             self.play_round
         end
         if !Dictionary.include?(@fragment)
-            puts "#{@current_player} wins"
+            puts "#{@current_player.name} wins"
         else
-            puts "#{@previous_player} wins"
+            puts "#{@previous_player.name} wins"
         end
 
 
@@ -92,7 +94,7 @@ class Game
 end
 
 if __FILE__ == $PROGRAM_NAME
-    a = Game.new(["jerry", "tom"])
+    a = Game.new(["jerry", "tom", "sam"])
     a.run
 
 end
