@@ -10,7 +10,7 @@ class Game
         names.each{|name| @players << Player.new(name)}
         @current_player = @players[0]
         @previous_player = nil
-        @losses = {}
+        @losses = Hash.new(0)
         @players.each{|player| @losses[player] = 0}
     end
 
@@ -39,8 +39,9 @@ class Game
     def take_turn(player)
         guess  = player.guess
         while !valid_play?(guess) && @losses[player] < 5
-            guess = player.guess
             @losses[player] +=1
+            puts record(player)
+            guess = player.guess
         end
         if @losses[player] < 5
             @fragment += guess
@@ -56,7 +57,6 @@ class Game
     end
 
     def play_round
-
         take_turn(@current_player)
         self.next_player!
 
@@ -65,9 +65,11 @@ class Game
 
     def run
 
-        while @losses.one?{|key, val| val < 5} || Dictionary.include?(@frament)
+        until @losses.one?{|key, val| val < 5} || Dictionary.include?(@fragment)
+
             self.play_round
         end
+        puts "#{@current_player} wins"
 
 
     end
