@@ -14,3 +14,9 @@ class Player
     end
 
 end
+
+if __FILE__ == $PROGRAM_NAME
+   a = Player.new("Jerry")
+   puts a
+   a.guess
+end
